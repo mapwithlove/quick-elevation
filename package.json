@@ -1,0 +1,19 @@
+{
+  "name": "quick-elevation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "example": "node --max-old-space-size=8192 example.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@turf/turf": "^5.1.6",
+    "async": "^3.2.0",
+    "axios": "^0.19.2",
+    "dem-reader": "sign0/dem-reader",
+    "moment": "^2.27.0"
+  }
+}
