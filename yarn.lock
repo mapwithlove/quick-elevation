@@ -1255,7 +1255,7 @@ dem-reader@sign0/dem-reader:
   version "1.0.0"
   resolved "https://codeload.github.com/sign0/dem-reader/tar.gz/6b680e0e670548d73cec57aaf010fe53f411ab6c"
   dependencies:
-    geotiff "^1.0.0-beta.6"
+    geotiff "^1.0.0-beta.13"
     transformations "^1.2.0"
 
 density-clustering@1.3.0:
@@ -1327,7 +1327,7 @@ geojson-rbush@2.1.0:
     "@turf/meta" "*"
     rbush "*"
 
-geotiff@^1.0.0-beta.6:
+geotiff@^1.0.0-beta.13:
   version "1.0.0-beta.13"
   resolved "https://registry.yarnpkg.com/geotiff/-/geotiff-1.0.0-beta.13.tgz#bd167c8ae3bf3b3d5c3b99f47dd0c1ef60dbf304"
   integrity sha512-B2H3sbM4PeuKrY/UVOZjzVdqHwHAuOCKhhkV1Xcj3CFnaDAoxJSEEVKNiziOrguv0pHyANJkyK0TSnPngHhjYg==
@@ -1381,9 +1381,9 @@ is-observable@^1.1.0:
     symbol-observable "^1.1.0"
 
 is-regex@^1.0.4, is-regex@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-regex/-/is-regex-1.1.0.tgz#ece38e389e490df0dc21caea2bd596f987f767ff"
-  integrity sha512-iI97M8KTWID2la5uYXlkbSDQIg4F6o1sYboZKKTDpnDQMLtUL86zxhgDet3Q2SriaYsyGqZ6Mn2SjbRKeLHdqw==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/is-regex/-/is-regex-1.1.1.tgz#c6f98aacc546f6cec5468a07b7b153ab564a57b9"
+  integrity sha512-1+QkEcxiLlB7VEyFtyBg94e08OAsvq7FUBgApTq/w2ymCLyKJgDPsybBENVtA7XCQEgEXxKPonG+mvYRxh/LIg==
   dependencies:
     has-symbols "^1.0.1"
 
