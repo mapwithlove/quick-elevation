@@ -3,14 +3,40 @@ const DemReader = require('dem-reader');
 const turf = require('@turf/turf');
 const path = require('path');
 const fs = require('fs');
+const asyncJS = require('async');
 
 //const pathToData = "./data/GTOPO30/";
-const pathToData = "./data/GMTED2010/";
+
+//const pathToData = "./data/GMTED2010/";
+const pathToData = "/dataset/";
+const concurrentTasks = 25;
 
 module.exports = {
 
+
     /**
-     * Preloaded tiles<
+     * Pool
+     */
+    pool: asyncJS.queue(( task, taskCallback ) => {
+        const tile = module.exports.getTheTile( module.exports.tiles, task.longitude, task.latitude );
+        const cmd = "gdallocationinfo " + pathToData + tile.file + " -wgs84 " + task.longitude + " " + task.latitude;
+        exec( cmd, ( err, stdout, stderr ) => {
+            if ( err ) {
+                console.error( 'exec error: ' + err );
+                return;
+            }
+            const splittedAltitudeRow = stdout.split( "\n" )[ 3 ];
+            const splittedAltitudeValue = splittedAltitudeRow ? splittedAltitudeRow.split( ": " )[ 1 ] : null;
+            if ( !splittedAltitudeValue ) {
+                return taskCallback( null );
+            }
+            return taskCallback( !isNaN( Number( splittedAltitudeValue ) ) ? Number( splittedAltitudeValue ) : null );
+        });
+    }, concurrentTasks ),
+
+
+    /**
+     * Preloaded tiles
      */
     tiles: [],
 
@@ -18,7 +44,7 @@ module.exports = {
      * Qury elevation in tiles
      */
     query: ( longitude, latitude, outputProjection = "EPSG:4326" ) => {
-        return new Promise( async ( resolve, reject ) => {
+        return new Promise(( resolve, reject ) => {
             if (
                 longitude === null || longitude === undefined
                 || latitude === null || latitude === undefined
@@ -26,12 +52,10 @@ module.exports = {
             ) {
                 return resolve( null );
             }
-            const tile = module.exports.getTheTile( module.exports.tiles, longitude, latitude );
-            //console.log( turf.point( [ longitude, latitude ] ).geometry );
-            //const dem = await DemReader.fromFile( tile.pathToFile );
-            const elevation = await tile.file.getElevationForPoint( turf.point( [ longitude, latitude ] ).geometry.coordinates, 'EPSG:4326' );
-            console.log( "elevation:", elevation );
-            return resolve( !!elevation ? elevation : null );
+            module.exports.pool.push({ longitude, latitude }, ( output ) => {
+                console.log( "output:", output );
+                resolve( output );
+            });
         });
     },
 
@@ -78,13 +102,11 @@ module.exports = {
                         dem = await DemReader.fromFile( pathToFile );
                         const bbox = dem._image.getBoundingBox();
                         const tilePayload = {
-                            pathToFile: pathToFile,
                             bbox: bbox,
                             geojsonOfBbox: turf.bboxPolygon( bbox ),
-                            file: dem,
+                            file: file,
                             name: file.replace( ".tif", "" ),
                         };
-                        //console.log( tilePayload )
                         module.exports.tiles.push( tilePayload );
                     }
                     catch( demError ) {

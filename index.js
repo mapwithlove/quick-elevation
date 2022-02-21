@@ -5,7 +5,9 @@ const path = require('path');
 const fs = require('fs');
 
 //const pathToData = "./data/GTOPO30/";
-const pathToData = "./data/GMTED2010/";
+
+//const pathToData = "./data/GMTED2010/";
+const pathToData = "/dataset/";
 
 module.exports = {
 

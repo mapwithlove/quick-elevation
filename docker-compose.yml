@@ -1,0 +1,38 @@
+version: '2.2'
+
+networks:
+  quickelevation:
+    driver: bridge
+
+services:
+  quickelevation:
+    container_name: quickelevation
+    build: ./
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 256m
+    volumes:
+      - ./data:/opt/app/data
+      #
+      - ./index.js:/opt/app/index.js
+      - ./example.js:/opt/app/example.js
+      #
+      - ./index_geotiff.js:/opt/app/index_geotiff.js
+      - ./example_geotiff.js:/opt/app/example_geotiff.js
+      #
+      - ./index_queue.js:/opt/app/index_queue.js
+      - ./example_queue.js:/opt/app/example_queue.js
+    tmpfs:
+      - /dataset
+    networks:
+      - quickelevation
+    #command: sh -c "ln -st /dataset /opt/app/data/GMTED2010/* && ls -lah /dataset"
+    #command: sh -c "ln -st /dataset /opt/app/data/GMTED2010/* && yarn run example"
+    #command: sh -c "ln -st /dataset /opt/app/data/GMTED2010/* && df -h"
+    
+    #command: sh -c "cp -R /opt/app/data/GMTED2010/* /dataset && df -h"
+    
+    #command: sh -c "cp -R /opt/app/data/GMTED2010/* /dataset && yarn run example"
+    
+    command: sh -c "cp -R /opt/app/data/GMTED2010/* /dataset && node example_queue.js"

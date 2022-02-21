@@ -2,11 +2,11 @@
 const moment = require('moment');
 const turf = require('@turf/turf');
 
-const { generateIndexOfTiles, query } = require('./index.js');
+const { generateIndexOfTiles, query } = require('./index_queue.js');
 
-//const bboxOfRandomizedPoints = [ 5.9559, 45.818, 10.4921, 47.8084 ];    // Swiss
+const bboxOfRandomizedPoints = [ 5.9559, 45.818, 10.4921, 47.8084 ];    // Swiss
 //const bboxOfRandomizedPoints = [ -5.47, 41.18, 10.49, 51.23 ];          // France
-const bboxOfRandomizedPoints = [ -180, -90, 180, 90 ];                  // World
+//const bboxOfRandomizedPoints = [ -180, -90, 180, 90 ];                  // World
 const numberOfRandomizedPoints = 500;
 const randomizedPoints = turf.randomPoint( numberOfRandomizedPoints, { bbox: bboxOfRandomizedPoints } ).features;
 /*
